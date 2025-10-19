@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  test-generator:
+    build: .
+    container_name: automotive-test-gen
+    volumes:
+      - ./datasheets:/app/datasheets
+      - ./output:/app/output
+    environment:
+      - OLLAMA_HOST=http://host.docker.internal:11434
+    network_mode: host
+

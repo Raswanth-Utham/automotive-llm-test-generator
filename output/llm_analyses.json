@@ -1,0 +1,87 @@
+[
+  {
+    "page": 56,
+    "table": 0,
+    "analysis": {
+      "register_name": "FMC/QuadSP (Block 5)",
+      "address": "0x1A4",
+      "access_type": "RW",
+      "reset_value": "Default FMC and QuadSP configuration values as per datasheet or reference manual.",
+      "test_scenarios": [
+        "Verify that the register can be written to with a valid pattern, then read back for correctness against expected value (e.g., setting control bits in FIFOs).",
+        "Test write-read operations under varying clock frequencies and voltages within specified operating conditions.",
+        "Check if writing invalid patterns results in proper error handling or fault reporting."
+      ],
+      "boundary_conditions": [
+        "Clock frequency at minimum, maximum, and nominal values",
+        "Supply voltage range from below to above the MCU's operating conditions"
+      ],
+      "notes": "Ensure that any write operations do not exceed timing constraints of FMC/QuadSP."
+    }
+  },
+  {
+    "page": 56,
+    "table": 1,
+    "analysis": {
+      "register_name": "FMC control register",
+      "address": "0xA000 0000 - 0xA000 0FFF",
+      "access_type": "RW/RO",
+      "reset_value": "Not specified in the context, assuming default to '1' for unspecified bits or a manufacturer-defined value if known",
+      "test_scenarios": [
+        {
+          "description": "Verify write permissions and correct functionality by writing test patterns across all addressable range of FMC control register."
+        },
+        {
+          "description": "Test read operations to ensure data integrity, including reading after writes with different values at various addresses within the specified boundary conditions."
+        },
+        {
+          "description": "Check for any unintended side effects on adjacent registers when writing and then immediately reading from FMC control register under specific test scenarios such as bus contention or noise interference simulation."
+        }
+      ],
+      "boundary_conditions": [
+        "Write to the upper boundary of address range",
+        "Read after write operations across all addresses within the specified range"
+      ],
+      "notes": "The FMC control register may interface with other peripherals, and its behavior could impact or be affected by these interactions. Special attention should also be paid to bus timing constraints."
+    }
+  },
+  {
+    "page": 57,
+    "table": 0,
+    "analysis": {
+      "register_name": "DCMI register map on page 439",
+      "address": "0x5005 0000 - 0x5005 03FF",
+      "access_type": "RW/RO",
+      "reset_value": "default value not specified in the table, assuming default to '0' for all bits if unspecified from context",
+      "test_scenarios": [
+        "Verify that writing a specific pattern and then reading back yields expected DCMI behavior.",
+        "Test boundary conditions by setting register values at extreme ends of specified range (highest/lowest) to ensure proper handling in the MCU's hardware design.",
+        "Simulate real-world scenarios where multiple peripherals may interact with the DCDMI registers simultaneously and observe if there are any conflicts or data integrity issues."
+      ],
+      "boundary_conditions": [
+        "highest value of register",
+        "lowest value of register"
+      ],
+      "notes": "No specific reset values provided, assuming default '0' for all bits. Additional context on peripheral interactions and expected behavior is required to create more targeted test scenarios."
+    }
+  },
+  {
+    "page": 58,
+    "table": 0,
+    "analysis": {
+      "register_name": "DAC register map",
+      "address": "0x4000 7400 - 0x4000 77FF",
+      "access_type": "RW/RO",
+      "reset_value": "default value not specified in the table, typically assumed to be zeros for unspecified registers.",
+      "test_scenarios": [
+        "Verify DAC register writes and reads within its address range ensure correct conversion of digital input values into analog output voltages",
+        "Test write-then-read scenarios with known inputs at the start, middle, and end points to validate proper functioning across all bits in the DAC registers",
+        "Simulate edge cases by writing extreme boundary conditions (min/max) for each bit field within the DAC register map"
+      ],
+      "boundary_conditions": [
+        "Minimum address value: '0x4000 7400' and maximum address value: '0x4000 77FF'"
+      ],
+      "notes": "The PWR peripheral is not listed with a bus, which may imply it uses an alternative communication protocol or does not interface directly through the APB1 bus. This should be investigated further."
+    }
+  }
+]
